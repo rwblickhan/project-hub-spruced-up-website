@@ -1,0 +1,11 @@
+{
+  "name": "spruced-up-website",
+  "version": "1.0.0",
+  "description": "A spruced-up personal website using Three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "R.W. Blickhan",
+  "license": "ISC"
+}
