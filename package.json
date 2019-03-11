@@ -1,18 +1,19 @@
 {
-  "name": "spruced-up-website",
-  "version": "1.0.0",
-  "description": "A spruced-up personal website using Three.js",
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "R.W. Blickhan",
-  "license": "ISC",
-  "dependencies": {
-    "three": "^0.102.1"
-  },
-  "devDependencies": {
-    "webpack": "^4.29.6",
-    "webpack-cli": "^3.2.3"
-  }
+    "name": "spruced-up-website",
+    "version": "1.0.0",
+    "description": "A spruced-up personal website using Three.js",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack"
+    },
+    "author": "R.W. Blickhan",
+    "license": "ISC",
+    "dependencies": {
+        "three": "^0.102.1"
+    },
+    "devDependencies": {
+        "webpack": "^4.29.6",
+        "webpack-cli": "^3.2.3"
+    }
 }
