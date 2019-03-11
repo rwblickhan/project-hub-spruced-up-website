@@ -5,11 +5,13 @@
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
+        "build": "webpack",
+        "serve": "npm run build && http-server"
     },
     "author": "R.W. Blickhan",
     "license": "ISC",
     "dependencies": {
+        "http-server": "^0.11.1",
         "three": "^0.102.1"
     },
     "devDependencies": {
