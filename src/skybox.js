@@ -64,6 +64,7 @@ class Skybox {
     generatePosZ() {
         const skyboxWall = this.generateSkyboxWall(PosZSkyboxTexture);
         skyboxWall.position.z = size;
+        skyboxWall.rotation.y = Math.PI;
         return skyboxWall;
     }
 
