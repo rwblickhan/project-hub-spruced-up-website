@@ -1,6 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Skybox } from './skybox'
+import NegXSkyboxTexture from './textures/vancouver_convention_centre/negx.jpg'
+import NegYSkyboxTexture from './textures/vancouver_convention_centre/negy.jpg'
+import NegZSkyboxTexture from './textures/vancouver_convention_centre/negz.jpg'
+import PosXSkyboxTexture from './textures/vancouver_convention_centre/posx.jpg'
+import PosYSkyboxTexture from './textures/vancouver_convention_centre/posy.jpg'
+import PosZSkyboxTexture from './textures/vancouver_convention_centre/posz.jpg'
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
@@ -25,7 +31,19 @@ const controls = new OrbitControls(camera, renderer.domElement);
 console.log("Created controls");
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const envmapLoader = new THREE.CubeTextureLoader();
+const textureCube = envmapLoader.load([
+    PosXSkyboxTexture, NegXSkyboxTexture,
+    PosYSkyboxTexture, NegYSkyboxTexture,
+    PosZSkyboxTexture, NegZSkyboxTexture
+]);
+const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 1.0,
+    roughness: 0.0,
+    envMap: textureCube
+});
+// const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 console.log("Created cube");
@@ -35,6 +53,9 @@ for (const wall of skybox.walls) {
     scene.add(wall);
 }
 console.log("Created skybox");
+
+const axesHelper = new THREE.AxesHelper(5);
+scene.add(axesHelper);
 
 function updateSize() {
     if (windowWidth !== window.innerWidth || windowHeight !== window.innerHeight) {
