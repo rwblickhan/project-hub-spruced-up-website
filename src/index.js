@@ -2,20 +2,27 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Skybox } from './skybox'
 
+let windowWidth = window.innerWidth;
+let windowHeight = window.innerWidth;
+
 const scene = new THREE.Scene();
 console.log("Created scene");
 
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 10000);
 camera.position.z = 5;
 scene.add(camera);
 console.log("Created camera");
 
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const canvas = document.getElementById('canvas');
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(windowWidth, windowHeight);
+canvas.appendChild(renderer.domElement);
 console.log("Created renderer");
 
-const controls = new OrbitControls(camera, domElement.camera);
+const controls = new OrbitControls(camera, renderer.domElement);
+console.log("Created controls");
 
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -29,11 +36,21 @@ for (const wall of skybox.walls) {
 }
 console.log("Created skybox");
 
+function updateSize() {
+    if (windowWidth !== window.innerWidth || windowHeight !== window.innerHeight) {
+        windowWidth = window.innerWidth;
+        windowHeight = window.innerHeight;
+        renderer.setSize(windowWidth, windowHeight);
+        console.log("Updated size");
+    }
+}
+
 function animate() {
+    updateSize();
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
-    requestAnimationFrame(animate);
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
 }
 
 animate();
