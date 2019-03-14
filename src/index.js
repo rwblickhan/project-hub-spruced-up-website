@@ -48,7 +48,11 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 console.log("Created cube");
 
-const skybox = new Skybox();
+const skybox = new Skybox(
+    PosXSkyboxTexture, NegXSkyboxTexture,
+    PosYSkyboxTexture, NegYSkyboxTexture,
+    PosZSkyboxTexture, NegZSkyboxTexture
+);
 for (const wall of skybox.walls) {
     scene.add(wall);
 }

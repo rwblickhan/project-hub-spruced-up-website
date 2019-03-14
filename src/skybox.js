@@ -2,67 +2,62 @@ export { Skybox }
 
 import * as THREE from 'three';
 
-import NegXSkyboxTexture from './textures/vancouver_convention_centre/negx.jpg'
-import NegYSkyboxTexture from './textures/vancouver_convention_centre/negy.jpg'
-import NegZSkyboxTexture from './textures/vancouver_convention_centre/negz.jpg'
-import PosXSkyboxTexture from './textures/vancouver_convention_centre/posx.jpg'
-import PosYSkyboxTexture from './textures/vancouver_convention_centre/posy.jpg'
-import PosZSkyboxTexture from './textures/vancouver_convention_centre/posz.jpg'
-
 const size = 1000;
 
 class Skybox {
 
-    constructor() {
+    constructor(posXImage, negXImage,
+        posYImage, negYImage,
+        posZImage, negZImage) {
         this.textureLoader = new THREE.TextureLoader();
         this.skyboxGeometry = new THREE.PlaneGeometry(2 * size, 2 * size);
-        const negX = this.generateNegX();
-        const posX = this.generatePosX();
-        const negY = this.generateNegY();
-        const posY = this.generatePosY();
-        const negZ = this.generateNegZ();
-        const posZ = this.generatePosZ();
+        const negX = this.generateNegX(negXImage);
+        const posX = this.generatePosX(posXImage);
+        const negY = this.generateNegY(negYImage);
+        const posY = this.generatePosY(posYImage);
+        const negZ = this.generateNegZ(negZImage);
+        const posZ = this.generatePosZ(posZImage);
         this.walls = [negX, posX, negY, posY, negZ, posZ]
     }
 
-    generateNegX() {
-        const skyboxWall = this.generateSkyboxWall(NegXSkyboxTexture);
+    generateNegX(negXImage) {
+        const skyboxWall = this.generateSkyboxWall(negXImage);
         skyboxWall.position.x = size;
         skyboxWall.rotation.y = -Math.PI / 2;
         return skyboxWall;
     }
 
-    generatePosX() {
-        const skyboxWall = this.generateSkyboxWall(PosXSkyboxTexture);
+    generatePosX(posXImage) {
+        const skyboxWall = this.generateSkyboxWall(posXImage);
         skyboxWall.position.x = -size;
         skyboxWall.rotation.y = Math.PI / 2;
         return skyboxWall;
     }
 
-    generateNegY() {
-        const skyboxWall = this.generateSkyboxWall(NegYSkyboxTexture);
+    generateNegY(negYImage) {
+        const skyboxWall = this.generateSkyboxWall(negYImage);
         skyboxWall.position.y = -size;
         skyboxWall.rotation.y = -Math.PI;
         skyboxWall.rotation.x = Math.PI / 2;
         return skyboxWall;
     }
 
-    generatePosY() {
-        const skyboxWall = this.generateSkyboxWall(PosYSkyboxTexture);
+    generatePosY(posYImage) {
+        const skyboxWall = this.generateSkyboxWall(posYImage);
         skyboxWall.position.y = size;
         skyboxWall.rotation.y = Math.PI;
         skyboxWall.rotation.x = -Math.PI / 2;
         return skyboxWall;
     }
 
-    generateNegZ() {
-        const skyboxWall = this.generateSkyboxWall(NegZSkyboxTexture);
+    generateNegZ(negZImage) {
+        const skyboxWall = this.generateSkyboxWall(negZImage);
         skyboxWall.position.z = -size;
         return skyboxWall;
     }
 
-    generatePosZ() {
-        const skyboxWall = this.generateSkyboxWall(PosZSkyboxTexture);
+    generatePosZ(posZImage) {
+        const skyboxWall = this.generateSkyboxWall(posZImage);
         skyboxWall.position.z = size;
         skyboxWall.rotation.y = Math.PI;
         return skyboxWall;
