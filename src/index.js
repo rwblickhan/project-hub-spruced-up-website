@@ -1,17 +1,23 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { Skybox } from './skybox'
-import NegXSkyboxTexture from './textures/vancouver_convention_centre/negx.jpg'
-import NegYSkyboxTexture from './textures/vancouver_convention_centre/negy.jpg'
-import NegZSkyboxTexture from './textures/vancouver_convention_centre/negz.jpg'
-import PosXSkyboxTexture from './textures/vancouver_convention_centre/posx.jpg'
-import PosYSkyboxTexture from './textures/vancouver_convention_centre/posy.jpg'
-import PosZSkyboxTexture from './textures/vancouver_convention_centre/posz.jpg'
+import NegXSkyboxTexture from './textures/space/space-negx.png'
+import NegYSkyboxTexture from './textures/space/space-negy.png'
+import NegZSkyboxTexture from './textures/space/space-negz.png'
+import PosXSkyboxTexture from './textures/space/space-posx.png'
+import PosYSkyboxTexture from './textures/space/space-posy.png'
+import PosZSkyboxTexture from './textures/space/space-posz.png'
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
 
 const scene = new THREE.Scene();
+scene.background = new THREE.CubeTextureLoader()
+    .load([
+        PosXSkyboxTexture, NegXSkyboxTexture,
+        PosYSkyboxTexture, NegYSkyboxTexture,
+        PosZSkyboxTexture, NegZSkyboxTexture
+    ])
 console.log("Created scene");
 
 const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 10000);
@@ -43,20 +49,9 @@ const material = new THREE.MeshStandardMaterial({
     roughness: 0.0,
     envMap: textureCube
 });
-// const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 console.log("Created cube");
-
-const skybox = new Skybox(
-    PosXSkyboxTexture, NegXSkyboxTexture,
-    PosYSkyboxTexture, NegYSkyboxTexture,
-    PosZSkyboxTexture, NegZSkyboxTexture
-);
-for (const wall of skybox.walls) {
-    scene.add(wall);
-}
-console.log("Created skybox");
 
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
