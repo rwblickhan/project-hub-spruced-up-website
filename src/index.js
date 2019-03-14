@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { Skybox } from './skybox'
 import NegXSkyboxTexture from './textures/space/space-negx.png'
 import NegYSkyboxTexture from './textures/space/space-negy.png'
 import NegZSkyboxTexture from './textures/space/space-negz.png'
