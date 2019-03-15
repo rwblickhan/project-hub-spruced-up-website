@@ -58,6 +58,17 @@ modelLoader.load(
 );
 console.log("Began loading earth model");
 
+const moonGeometry = new THREE.SphereGeometry(25, 32, 32);
+const moonMaterial = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 0.0,
+    roughness: 1.0
+});
+const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+moon.position.set(750, 0, 750);
+scene.add(moon);
+console.log("Added moon");
+
 // TODO: create a camera and set its position and direction
 // Hint: see PerspectiveCamera https://threejs.org/docs/index.html#api/en/cameras/PerspectiveCamera
 //       or OrthographicCamera https://threejs.org/docs/index.html#api/en/cameras/OrthographicCamera
@@ -67,6 +78,9 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
 console.log("Created camera");
 
+const ambientLight = new THREE.AmbientLight(0x404040);
+scene.add(ambientLight);
+
 // const sunlight = new THREE.DirectionalLight(0x404040);
 // sunlight.position.set(-1000, 1000, 1000);
 // scene.add(sunlight);
@@ -75,7 +89,6 @@ console.log("Created camera");
 // scene.add(sunlightHelper);
 
 const canvas = document.getElementById('canvas');
-
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(windowWidth, windowHeight);
@@ -84,23 +97,6 @@ console.log("Created renderer");
 
 const controls = new OrbitControls(camera, renderer.domElement);
 console.log("Created controls");
-
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const envmapLoader = new THREE.CubeTextureLoader();
-const textureCube = envmapLoader.load([
-    PosXSkyboxTexture, NegXSkyboxTexture,
-    PosYSkyboxTexture, NegYSkyboxTexture,
-    PosZSkyboxTexture, NegZSkyboxTexture
-]);
-const material = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    metalness: 1.0,
-    roughness: 0.0,
-    envMap: textureCube
-});
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-console.log("Created cube");
 
 // Three.js provides many useful Helpers to let you visualize where things are
 // AxesHelper puts coordinate axes at the scene origin point
@@ -118,8 +114,8 @@ function updateSize() {
 
 function animate() {
     updateSize();
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
     if (earth !== null) {
         earth.rotation.y += 0.001;
     }
