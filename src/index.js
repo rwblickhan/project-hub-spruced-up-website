@@ -16,6 +16,11 @@ let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
 
 const scene = new THREE.Scene();
+// TODO: Set the scene's background
+// Hint: Use a CubeTextureLoader: // https://threejs.org/docs/index.html#api/en/loaders/CubeTextureLoader
+//       We've provided textures/space/ and textures/vancouver_convention_centre/
+//       but feel free to find your own as well; http://www.humus.name/index.php?page=Textures
+//       is a convenient source
 scene.background = new THREE.CubeTextureLoader()
     .load([
         PosXSkyboxTexture, NegXSkyboxTexture,
@@ -31,7 +36,7 @@ const earthMaterial = new THREE.MeshBasicMaterial({
     bumpMap: textureLoader.load(EarthBumpTexture),
     normalMap: textureLoader.load(EarthNormalTexture)
 });
-console.log("Created earth texture");
+console.log("Created earth material");
 
 let earth = null;
 modelLoader.load(
@@ -42,6 +47,7 @@ modelLoader.load(
         });
         earth = object;
         scene.add(earth);
+        console.log("Added earth model to scene");
     },
     function (xhr) {
         console.log((xhr.loaded / xhr.total * 100) + '% loaded');
@@ -50,10 +56,13 @@ modelLoader.load(
         console.log("An error occurred: " + err);
     }
 );
-console.log("Began loading earth");
+console.log("Began loading earth model");
 
+// TODO: create a camera and set its position and direction
+// Hint: see PerspectiveCamera https://threejs.org/docs/index.html#api/en/cameras/PerspectiveCamera
+//       or OrthographicCamera https://threejs.org/docs/index.html#api/en/cameras/OrthographicCamera
 const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 10000);
-camera.position.set(0, 0, 750);
+camera.position.set(-100, 350, -750);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
 console.log("Created camera");
@@ -93,6 +102,8 @@ const cube = new THREE.Mesh(geometry, material);
 scene.add(cube);
 console.log("Created cube");
 
+// Three.js provides many useful Helpers to let you visualize where things are
+// AxesHelper puts coordinate axes at the scene origin point
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
