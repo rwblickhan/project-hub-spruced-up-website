@@ -3,3 +3,4 @@ node_modules/
 public/main.js
 public/*.jpg
 public/*.png
+public/*.obj
