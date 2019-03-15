@@ -11,6 +11,8 @@ import EarthModel from './models/earth.obj'
 import EarthNightTexture from './textures/4096_night_lights.jpg'
 import EarthBumpTexture from './textures/4096_bump.jpg'
 import EarthNormalTexture from './textures/4096_normal.jpg'
+import MoonDiffuseTexture from './textures/moon/Diffuse_2K.png'
+import MoonBumpTexture from './textures/moon/Bump_2K.png'
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
@@ -60,9 +62,8 @@ console.log("Began loading earth model");
 
 const moonGeometry = new THREE.SphereGeometry(25, 32, 32);
 const moonMaterial = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    metalness: 0.0,
-    roughness: 1.0
+    map: textureLoader.load(MoonDiffuseTexture),
+    bumpMap: textureLoader.load(MoonBumpTexture)
 });
 const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 moon.position.set(750, 0, 750);
