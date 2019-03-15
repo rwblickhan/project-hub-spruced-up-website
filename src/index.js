@@ -1,11 +1,16 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import NegXSkyboxTexture from './textures/space/space-negx.png'
 import NegYSkyboxTexture from './textures/space/space-negy.png'
 import NegZSkyboxTexture from './textures/space/space-negz.png'
 import PosXSkyboxTexture from './textures/space/space-posx.png'
 import PosYSkyboxTexture from './textures/space/space-posy.png'
 import PosZSkyboxTexture from './textures/space/space-posz.png'
+import EarthModel from './models/earth.obj'
+import EarthNightTexture from './textures/4096_night_lights.jpg'
+import EarthBumpTexture from './textures/4096_bump.jpg'
+import EarthNormalTexture from './textures/4096_normal.jpg'
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
@@ -19,10 +24,46 @@ scene.background = new THREE.CubeTextureLoader()
     ])
 console.log("Created scene");
 
+const modelLoader = new OBJLoader();
+const textureLoader = new THREE.TextureLoader();
+const earthMaterial = new THREE.MeshBasicMaterial({
+    map: textureLoader.load(EarthNightTexture),
+    bumpMap: textureLoader.load(EarthBumpTexture),
+    normalMap: textureLoader.load(EarthNormalTexture)
+});
+console.log("Created earth texture");
+
+let earth = null;
+modelLoader.load(
+    EarthModel,
+    function (object) {
+        object.traverse(function (child) {
+            if (child.isMesh) child.material = earthMaterial;
+        });
+        earth = object;
+        scene.add(earth);
+    },
+    function (xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    function (err) {
+        console.log("An error occurred: " + err);
+    }
+);
+console.log("Began loading earth");
+
 const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 10000);
-camera.position.z = 5;
+camera.position.set(0, 0, 750);
+camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
 console.log("Created camera");
+
+// const sunlight = new THREE.DirectionalLight(0x404040);
+// sunlight.position.set(-1000, 1000, 1000);
+// scene.add(sunlight);
+
+// const sunlightHelper = new THREE.DirectionalLightHelper(sunlight);
+// scene.add(sunlightHelper);
 
 const canvas = document.getElementById('canvas');
 
@@ -68,6 +109,9 @@ function animate() {
     updateSize();
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
+    if (earth !== null) {
+        earth.rotation.y += 0.001;
+    }
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
 }
