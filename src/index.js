@@ -8,11 +8,13 @@ import PosXSkyboxTexture from './textures/space/space-posx.png'
 import PosYSkyboxTexture from './textures/space/space-posy.png'
 import PosZSkyboxTexture from './textures/space/space-posz.png'
 import EarthModel from './models/earth.obj'
-import EarthNightTexture from './textures/4096_night_lights.jpg'
-import EarthBumpTexture from './textures/4096_bump.jpg'
-import EarthNormalTexture from './textures/4096_normal.jpg'
-import MoonDiffuseTexture from './textures/moon/Diffuse_2K.png'
-import MoonBumpTexture from './textures/moon/Bump_2K.png'
+import EarthDiffuseTexture from './textures/earth/4096_earth.jpg'
+import EarthCloudsTexture from './textures/earth/4096_clouds.jpg'
+import EarthNightTexture from './textures/earth/4096_night_lights.jpg'
+import EarthBumpTexture from './textures/earth/4096_bump.jpg'
+import EarthNormalTexture from './textures/earth/4096_normal.jpg'
+import MoonDiffuseTexture from './textures/moon/moonmap2k.jpg'
+import MoonBumpTexture from './textures/moon/moon-normal.jpg'
 
 let windowWidth = window.innerWidth;
 let windowHeight = window.innerWidth;
@@ -33,10 +35,11 @@ console.log("Created scene");
 
 const modelLoader = new OBJLoader();
 const textureLoader = new THREE.TextureLoader();
-const earthMaterial = new THREE.MeshBasicMaterial({
-    map: textureLoader.load(EarthNightTexture),
+const earthMaterial = new THREE.MeshStandardMaterial({
+    map: textureLoader.load(EarthDiffuseTexture),
     bumpMap: textureLoader.load(EarthBumpTexture),
-    normalMap: textureLoader.load(EarthNormalTexture)
+    normalMap: textureLoader.load(EarthNormalTexture),
+    metalness: 0.5
 });
 console.log("Created earth material");
 
@@ -45,7 +48,11 @@ modelLoader.load(
     EarthModel,
     function (object) {
         object.traverse(function (child) {
-            if (child.isMesh) child.material = earthMaterial;
+            if (child.isMesh) {
+                child.material = earthMaterial;
+                child.castShadow = true;
+                child.receiveShadow = true;
+            }
         });
         earth = object;
         scene.add(earth);
@@ -63,10 +70,13 @@ console.log("Began loading earth model");
 const moonGeometry = new THREE.SphereGeometry(25, 32, 32);
 const moonMaterial = new THREE.MeshStandardMaterial({
     map: textureLoader.load(MoonDiffuseTexture),
-    bumpMap: textureLoader.load(MoonBumpTexture)
+    bumpMap: textureLoader.load(MoonBumpTexture),
+    metalness: 0.5
 });
 const moon = new THREE.Mesh(moonGeometry, moonMaterial);
 moon.position.set(750, 0, 750);
+moon.castShadow = true;
+moon.receiveShadow = true;
 scene.add(moon);
 console.log("Added moon");
 
@@ -79,15 +89,16 @@ camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
 console.log("Created camera");
 
-const ambientLight = new THREE.AmbientLight(0x404040);
+const ambientLight = new THREE.AmbientLight(0xFFFFFF);
 scene.add(ambientLight);
 
-// const sunlight = new THREE.DirectionalLight(0x404040);
-// sunlight.position.set(-1000, 1000, 1000);
-// scene.add(sunlight);
+const sunlight = new THREE.DirectionalLight(0xFFFFFF);
+sunlight.position.set(-1000, 0, 1000);
+sunlight.castShadow = true;
+scene.add(sunlight);
 
-// const sunlightHelper = new THREE.DirectionalLightHelper(sunlight);
-// scene.add(sunlightHelper);
+const sunlightHelper = new THREE.DirectionalLightHelper(sunlight);
+scene.add(sunlightHelper);
 
 const canvas = document.getElementById('canvas');
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -115,10 +126,15 @@ function updateSize() {
 
 function animate() {
     updateSize();
-    // cube.rotation.x += 0.01;
-    // cube.rotation.y += 0.01;
     if (earth !== null) {
         earth.rotation.y += 0.001;
+    }
+    if (moon !== null) {
+        moon.rotation.y += 0.0022;
+        let cylindricalCoordinates = new THREE.Cylindrical();
+        cylindricalCoordinates.setFromVector3(moon.position);
+        cylindricalCoordinates.theta += 0.002;
+        moon.position.setFromCylindrical(cylindricalCoordinates);
     }
     renderer.render(scene, camera);
     requestAnimationFrame(animate);
