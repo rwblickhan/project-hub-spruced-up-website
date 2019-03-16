@@ -13,7 +13,7 @@ Clone this repo onto your computer.
 Open a terminal, navigate to project-hub-spruced-up-website/, and type the following commands:
 
 ```console
-foo@bar:~$ npm install
+foo@bar:~$ npm install --dev
 ```
 
 ```console
