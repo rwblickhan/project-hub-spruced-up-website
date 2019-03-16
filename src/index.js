@@ -7,7 +7,7 @@ import EarthBumpTexture from './textures/earth/4096_bump.jpg'
 import EarthNormalTexture from './textures/earth/4096_normal.jpg'
 
 let windowWidth = window.innerWidth;
-let windowHeight = window.innerWidth;
+let windowHeight = window.innerHeight;
 
 const scene = new THREE.Scene();
 // TODO: Set the scene's background
