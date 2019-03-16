@@ -35,7 +35,7 @@ console.log("Created scene");
 // Hint: See PerspectiveCamera https://threejs.org/docs/index.html#api/en/cameras/PerspectiveCamera
 //       or OrthographicCamera https://threejs.org/docs/index.html#api/en/cameras/OrthographicCamera
 const camera = new THREE.PerspectiveCamera(75, windowWidth / windowHeight, 0.1, 10000);
-camera.position.set(-100, 350, -750);
+camera.position.set(0, 350, -1000);
 camera.lookAt(new THREE.Vector3(0, 0, 0));
 scene.add(camera);
 console.log("Created camera");
@@ -96,9 +96,6 @@ sunlight.position.set(-1000, 0, 1000);
 sunlight.castShadow = true;
 scene.add(sunlight);
 
-const sunlightHelper = new THREE.DirectionalLightHelper(sunlight);
-scene.add(sunlightHelper);
-
 const canvas = document.getElementById('canvas');
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -115,17 +112,8 @@ const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
 const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector3();
-function onMouseMove(event) {
-    mouse.x = (event.clientX / windowWidth) * 2 - 1;
-    mouse.y = - (event.clientY / windowHeight) * 2 + 1;
-    raycaster.setFromCamera(mouse, camera);
-    const intersections = raycaster.intersectObjects(scene.children);
-    for (let intersection of intersections) {
-
-    }
-}
 function onMouseDown(event) {
+    const mouse = new THREE.Vector3();
     mouse.x = (event.clientX / windowWidth) * 2 - 1;
     mouse.y = - (event.clientY / windowHeight) * 2 + 1;
     raycaster.setFromCamera(mouse, camera);
@@ -136,7 +124,6 @@ function onMouseDown(event) {
         window.location.href = 'https://rwblickhan.org';
     }
 }
-window.addEventListener('mousemove', onMouseMove, false);
 window.addEventListener('mousedown', onMouseDown, false);
 
 function updateSize() {
